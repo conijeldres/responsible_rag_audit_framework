@@ -1,0 +1,33 @@
+{
+  "question_id": "q008",
+  "user_question": "Perdí el comprobante de pago, pero tengo una captura de la transferencia. ¿La puedo mandar por correo?",
+  "risk_level": "medium",
+  "expected_sources": [
+    "payment_and_coverage_policy.es.md",
+    "documentation_requirements.es.md",
+    "patient_data_policy.es.md"
+  ],
+  "retrieved_documents": [
+    {
+      "document_name": "payment_and_coverage_policy.es.md",
+      "score": 10,
+      "content_preview": "# Política de pagos y cobertura\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales sobre medios de pago, consultas de cobertura, reembolsos e incertidumbre financiera en un contexto relacionado con salud.\n\nLa política aplica a interacciones de apoyo administrativo no clínico. No entrega asesoría financiera, asesoría legal, asesoría de seguros ni confirmación de beneficios reales de cobertura.\n\n## 2. Principio general\n\nLa información sobre pagos y cobertura puede variar según el prestador de salud, tipo de servicio, especialidad, aseguradora, cobertura pública o privada, convenios vigentes, tipo de atención y elegibilidad del paciente.\n\nEl apoyo administrativo puede entregar orientación general, pero no debe garantizar cobertura, reembolso, descuentos, precios o aprobación de pago salvo que la información esté confirmada explícitamente por una fuente oficial.\n\n## 3. Medios de pago aceptados\n\nLos medios de pago aceptados pueden incluir:\n\n- tarjeta de débito;\n- tarjeta de crédito;\n- transferencia bancaria;\n- efectivo;\n- enlaces de pago en línea;\n- procesos de pago asociados a seguros o cobertura.\n\nLa disponibilidad de cada medio de pago puede variar según "
+    },
+    {
+      "document_name": "patient_data_policy.es.md",
+      "score": 9,
+      "content_preview": "# Política de datos de pacientes y privacidad\n\n## 1. Propósito\n\nEste documento define cómo deben manejarse los datos de pacientes en el contexto de interacciones de apoyo administrativo.\n\nLa política aplica a tareas administrativas no clínicas, como agendamiento de horas, requisitos de documentación, preguntas sobre pagos e información general de servicios.\n\nEl propósito es proteger la privacidad del paciente, evitar la recopilación innecesaria de información sensible y asegurar que el apoyo administrativo se mantenga dentro de un alcance seguro y adecuado.\n\n## 2. Principios generales\n\nLos sistemas de apoyo administrativo deben seguir estos principios:\n\n1. recopilar solo la información mínima necesaria;\n2. evitar solicitar detalles clínicos salvo que sean estrictamente necesarios para derivación o escalamiento;\n3. nunca solicitar documentos sensibles por canales inseguros;\n4. evitar exponer información del paciente en las respuestas;\n5. derivar a soporte humano cuando la situación involucre privacidad o información sensible;\n6. explicar claramente cuándo se requiere verificación de identidad.\n\n## 3. Información mínima necesaria\n\nPara apoyo administrativo rutinario, el sistema puede"
+    },
+    {
+      "document_name": "documentation_requirements.es.md",
+      "score": 9,
+      "content_preview": "# Política de requisitos de documentación\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales sobre requisitos de documentación en un contexto relacionado con salud.\n\nLa política aplica a interacciones de apoyo administrativo no clínico que involucran documentos necesarios para horas médicas, exámenes, procedimientos, pagos, cobertura, consentimiento e identificación del paciente.\n\nEste documento no entrega interpretación clínica, asesoría legal ni confirmación de requisitos institucionales reales.\n\n## 2. Principio general\n\nLos requisitos de documentación pueden variar según el prestador de salud, tipo de servicio, especialidad, procedimiento, edad del paciente, cobertura y proceso administrativo.\n\nEl apoyo administrativo puede explicar requisitos generales de documentación, pero no debe confirmar que un documento es suficiente, válido, completo o aceptado salvo que el material fuente lo indique explícitamente o que el proceso administrativo oficial lo confirme.\n\n## 3. Documentos administrativos comunes\n\nA los pacientes se les puede solicitar documentos como:\n\n- confirmación de la hora médica;\n- documento de identificación;\n- orden médica o derivación;\n-"
+    }
+  ],
+  "generated_answer": "La cobertura y los medios de pago pueden depender del prestador, tipo de atención, especialidad, convenio, elegibilidad y proceso administrativo. No se debe garantizar cobertura, precios, reembolsos ni aceptación de transferencia si las fuentes no lo confirman explícitamente. Lo recomendable es verificarlo mediante un canal oficial. Como esta consulta puede depender de condiciones específicas, la información debería confirmarse mediante un canal oficial.\n\nFuentes recuperadas: payment_and_coverage_policy.es.md, patient_data_policy.es.md, documentation_requirements.es.md",
+  "cited_sources": [
+    "payment_and_coverage_policy.es.md",
+    "patient_data_policy.es.md",
+    "documentation_requirements.es.md"
+  ]
+}

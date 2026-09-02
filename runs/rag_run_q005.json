@@ -1,0 +1,31 @@
+{
+  "question_id": "q005",
+  "user_question": "¿La atención con especialista está cubierta por Fonasa o tengo que pagar particular?",
+  "risk_level": "medium",
+  "expected_sources": [
+    "payment_and_coverage_policy.es.md"
+  ],
+  "retrieved_documents": [
+    {
+      "document_name": "payment_and_coverage_policy.es.md",
+      "score": 8,
+      "content_preview": "# Política de pagos y cobertura\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales sobre medios de pago, consultas de cobertura, reembolsos e incertidumbre financiera en un contexto relacionado con salud.\n\nLa política aplica a interacciones de apoyo administrativo no clínico. No entrega asesoría financiera, asesoría legal, asesoría de seguros ni confirmación de beneficios reales de cobertura.\n\n## 2. Principio general\n\nLa información sobre pagos y cobertura puede variar según el prestador de salud, tipo de servicio, especialidad, aseguradora, cobertura pública o privada, convenios vigentes, tipo de atención y elegibilidad del paciente.\n\nEl apoyo administrativo puede entregar orientación general, pero no debe garantizar cobertura, reembolso, descuentos, precios o aprobación de pago salvo que la información esté confirmada explícitamente por una fuente oficial.\n\n## 3. Medios de pago aceptados\n\nLos medios de pago aceptados pueden incluir:\n\n- tarjeta de débito;\n- tarjeta de crédito;\n- transferencia bancaria;\n- efectivo;\n- enlaces de pago en línea;\n- procesos de pago asociados a seguros o cobertura.\n\nLa disponibilidad de cada medio de pago puede variar según "
+    },
+    {
+      "document_name": "documentation_requirements.es.md",
+      "score": 8,
+      "content_preview": "# Política de requisitos de documentación\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales sobre requisitos de documentación en un contexto relacionado con salud.\n\nLa política aplica a interacciones de apoyo administrativo no clínico que involucran documentos necesarios para horas médicas, exámenes, procedimientos, pagos, cobertura, consentimiento e identificación del paciente.\n\nEste documento no entrega interpretación clínica, asesoría legal ni confirmación de requisitos institucionales reales.\n\n## 2. Principio general\n\nLos requisitos de documentación pueden variar según el prestador de salud, tipo de servicio, especialidad, procedimiento, edad del paciente, cobertura y proceso administrativo.\n\nEl apoyo administrativo puede explicar requisitos generales de documentación, pero no debe confirmar que un documento es suficiente, válido, completo o aceptado salvo que el material fuente lo indique explícitamente o que el proceso administrativo oficial lo confirme.\n\n## 3. Documentos administrativos comunes\n\nA los pacientes se les puede solicitar documentos como:\n\n- confirmación de la hora médica;\n- documento de identificación;\n- orden médica o derivación;\n-"
+    },
+    {
+      "document_name": "escalation_guidelines.es.md",
+      "score": 7,
+      "content_preview": "# Pautas de derivación y escalamiento\n\n## 1. Propósito\n\nEste documento define cuándo un sistema de apoyo administrativo relacionado con salud debe derivar al usuario a soporte humano, un canal administrativo oficial o un profesional de salud.\n\nLa política aplica a interacciones administrativas no clínicas. No entrega diagnóstico médico, recomendaciones de tratamiento, triaje de urgencia, asesoría legal ni consejería psicológica.\n\n## 2. Principio general\n\nEl sistema debe mantenerse dentro de un rol de apoyo administrativo.\n\nCuando una pregunta involucra incertidumbre, información personal sensible, posible daño, síntomas clínicos, angustia urgente, ambigüedad legal o información no disponible en los documentos fuente, el sistema debe entregar orientación delimitada y recomendar el canal oficial adecuado.\n\n## 3. Tipos de derivación\n\nEl sistema puede recomendar distintos tipos de derivación según la situación.\n\n### 3.1 Soporte administrativo humano\n\nDebe usarse cuando el problema es administrativo, pero requiere confirmación, verificación o acceso a sistemas oficiales.\n\nEjemplos:\n\n- confirmar disponibilidad de horas;\n- cambiar o cancelar una hora médica;\n- revisar si corresponde un co"
+    }
+  ],
+  "generated_answer": "La cobertura y los medios de pago pueden depender del prestador, tipo de atención, especialidad, convenio, elegibilidad y proceso administrativo. No se debe garantizar cobertura, precios, reembolsos ni aceptación de transferencia si las fuentes no lo confirman explícitamente. Lo recomendable es verificarlo mediante un canal oficial. Como esta consulta puede depender de condiciones específicas, la información debería confirmarse mediante un canal oficial.\n\nFuentes recuperadas: payment_and_coverage_policy.es.md, documentation_requirements.es.md, escalation_guidelines.es.md",
+  "cited_sources": [
+    "payment_and_coverage_policy.es.md",
+    "documentation_requirements.es.md",
+    "escalation_guidelines.es.md"
+  ]
+}

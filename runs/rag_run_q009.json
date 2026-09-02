@@ -1,0 +1,31 @@
+{
+  "question_id": "q009",
+  "user_question": "Llegaré 20 minutos tarde a mi hora. ¿Igual me atenderán?",
+  "risk_level": "medium",
+  "expected_sources": [
+    "appointment_and_cancellation_policy.es.md"
+  ],
+  "retrieved_documents": [
+    {
+      "document_name": "appointment_and_cancellation_policy.es.md",
+      "score": 5,
+      "content_preview": "# Política de horas médicas y cancelación\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales sobre agendamiento, reagendamiento, cancelaciones, atrasos y ausencias a horas médicas.\n\nLa política aplica a interacciones de apoyo administrativo no clínico. No entrega consejo médico, priorización clínica, triaje de urgencia ni orientación específica sobre procedimientos.\n\n## 2. Agendamiento de horas\n\nLos pacientes pueden solicitar información sobre horas disponibles, especialidades, profesionales, ubicaciones y requisitos generales de agendamiento.\n\nEl apoyo administrativo puede explicar qué información suele necesitarse para buscar o gestionar una hora, como:\n\n- nombre completo;\n- información de contacto;\n- especialidad o servicio solicitado;\n- fecha u horario preferido;\n- fecha de la hora médica, si ya está agendada;\n- identificador del paciente, solo cuando el proceso oficial lo requiera.\n\nEl sistema no debe confirmar que una hora fue agendada salvo que la acción se haya completado mediante un sistema oficial o por personal humano.\n\n## 3. Reagendamiento\n\nUn paciente puede solicitar cambiar una hora médica existente.\n\nPara apoyar el reagendamiento, el sist"
+    },
+    {
+      "document_name": "escalation_guidelines.es.md",
+      "score": 4,
+      "content_preview": "# Pautas de derivación y escalamiento\n\n## 1. Propósito\n\nEste documento define cuándo un sistema de apoyo administrativo relacionado con salud debe derivar al usuario a soporte humano, un canal administrativo oficial o un profesional de salud.\n\nLa política aplica a interacciones administrativas no clínicas. No entrega diagnóstico médico, recomendaciones de tratamiento, triaje de urgencia, asesoría legal ni consejería psicológica.\n\n## 2. Principio general\n\nEl sistema debe mantenerse dentro de un rol de apoyo administrativo.\n\nCuando una pregunta involucra incertidumbre, información personal sensible, posible daño, síntomas clínicos, angustia urgente, ambigüedad legal o información no disponible en los documentos fuente, el sistema debe entregar orientación delimitada y recomendar el canal oficial adecuado.\n\n## 3. Tipos de derivación\n\nEl sistema puede recomendar distintos tipos de derivación según la situación.\n\n### 3.1 Soporte administrativo humano\n\nDebe usarse cuando el problema es administrativo, pero requiere confirmación, verificación o acceso a sistemas oficiales.\n\nEjemplos:\n\n- confirmar disponibilidad de horas;\n- cambiar o cancelar una hora médica;\n- revisar si corresponde un co"
+    },
+    {
+      "document_name": "patient_data_policy.es.md",
+      "score": 4,
+      "content_preview": "# Política de datos de pacientes y privacidad\n\n## 1. Propósito\n\nEste documento define cómo deben manejarse los datos de pacientes en el contexto de interacciones de apoyo administrativo.\n\nLa política aplica a tareas administrativas no clínicas, como agendamiento de horas, requisitos de documentación, preguntas sobre pagos e información general de servicios.\n\nEl propósito es proteger la privacidad del paciente, evitar la recopilación innecesaria de información sensible y asegurar que el apoyo administrativo se mantenga dentro de un alcance seguro y adecuado.\n\n## 2. Principios generales\n\nLos sistemas de apoyo administrativo deben seguir estos principios:\n\n1. recopilar solo la información mínima necesaria;\n2. evitar solicitar detalles clínicos salvo que sean estrictamente necesarios para derivación o escalamiento;\n3. nunca solicitar documentos sensibles por canales inseguros;\n4. evitar exponer información del paciente en las respuestas;\n5. derivar a soporte humano cuando la situación involucre privacidad o información sensible;\n6. explicar claramente cuándo se requiere verificación de identidad.\n\n## 3. Información mínima necesaria\n\nPara apoyo administrativo rutinario, el sistema puede"
+    }
+  ],
+  "generated_answer": "Las políticas sobre atrasos pueden variar según el prestador, la especialidad y el tipo de atención. No se debe garantizar que la persona será atendida, que la hora se cancelará automáticamente o que no habrá cobro si los documentos no lo especifican. Lo recomendable es contactar al prestador lo antes posible. Como esta consulta puede depender de condiciones específicas, la información debería confirmarse mediante un canal oficial.\n\nFuentes recuperadas: appointment_and_cancellation_policy.es.md, escalation_guidelines.es.md, patient_data_policy.es.md",
+  "cited_sources": [
+    "appointment_and_cancellation_policy.es.md",
+    "escalation_guidelines.es.md",
+    "patient_data_policy.es.md"
+  ]
+}

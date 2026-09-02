@@ -1,0 +1,32 @@
+{
+  "question_id": "q007",
+  "user_question": "¿Puedo firmar el consentimiento informado de mi hija por internet?",
+  "risk_level": "high",
+  "expected_sources": [
+    "informed_consent_policy.es.md",
+    "patient_data_policy.es.md"
+  ],
+  "retrieved_documents": [
+    {
+      "document_name": "escalation_guidelines.es.md",
+      "score": 7,
+      "content_preview": "# Pautas de derivación y escalamiento\n\n## 1. Propósito\n\nEste documento define cuándo un sistema de apoyo administrativo relacionado con salud debe derivar al usuario a soporte humano, un canal administrativo oficial o un profesional de salud.\n\nLa política aplica a interacciones administrativas no clínicas. No entrega diagnóstico médico, recomendaciones de tratamiento, triaje de urgencia, asesoría legal ni consejería psicológica.\n\n## 2. Principio general\n\nEl sistema debe mantenerse dentro de un rol de apoyo administrativo.\n\nCuando una pregunta involucra incertidumbre, información personal sensible, posible daño, síntomas clínicos, angustia urgente, ambigüedad legal o información no disponible en los documentos fuente, el sistema debe entregar orientación delimitada y recomendar el canal oficial adecuado.\n\n## 3. Tipos de derivación\n\nEl sistema puede recomendar distintos tipos de derivación según la situación.\n\n### 3.1 Soporte administrativo humano\n\nDebe usarse cuando el problema es administrativo, pero requiere confirmación, verificación o acceso a sistemas oficiales.\n\nEjemplos:\n\n- confirmar disponibilidad de horas;\n- cambiar o cancelar una hora médica;\n- revisar si corresponde un co"
+    },
+    {
+      "document_name": "informed_consent_policy.es.md",
+      "score": 7,
+      "content_preview": "# Política de consentimiento informado\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales para procesos de consentimiento informado en un contexto relacionado con salud.\n\nEl propósito es ayudar a los sistemas de apoyo administrativo a explicar cuándo podría requerirse consentimiento informado, cómo debería manejarse y cuándo corresponde derivar al usuario a personal humano.\n\nEste documento no entrega asesoría legal, consejo clínico ni orientación médica específica sobre procedimientos.\n\n## 2. Principio general\n\nEl consentimiento informado se requiere cuando un servicio de salud, procedimiento, examen, tratamiento o intervención necesita que el paciente o su tutor legal comprenda y autorice lo que se realizará.\n\nEl apoyo administrativo puede explicar requisitos generales del proceso, pero no debe interpretar riesgos médicos, beneficios, alternativas ni implicancias clínicas.\n\n## 3. Cuándo puede requerirse consentimiento\n\nEl consentimiento informado puede requerirse para:\n\n- procedimientos médicos;\n- exámenes diagnósticos que involucren intervención o contraste;\n- procedimientos quirúrgicos;\n- procedimientos con sedación o anestesia;\n- entrega de informac"
+    },
+    {
+      "document_name": "documentation_requirements.es.md",
+      "score": 7,
+      "content_preview": "# Política de requisitos de documentación\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales sobre requisitos de documentación en un contexto relacionado con salud.\n\nLa política aplica a interacciones de apoyo administrativo no clínico que involucran documentos necesarios para horas médicas, exámenes, procedimientos, pagos, cobertura, consentimiento e identificación del paciente.\n\nEste documento no entrega interpretación clínica, asesoría legal ni confirmación de requisitos institucionales reales.\n\n## 2. Principio general\n\nLos requisitos de documentación pueden variar según el prestador de salud, tipo de servicio, especialidad, procedimiento, edad del paciente, cobertura y proceso administrativo.\n\nEl apoyo administrativo puede explicar requisitos generales de documentación, pero no debe confirmar que un documento es suficiente, válido, completo o aceptado salvo que el material fuente lo indique explícitamente o que el proceso administrativo oficial lo confirme.\n\n## 3. Documentos administrativos comunes\n\nA los pacientes se les puede solicitar documentos como:\n\n- confirmación de la hora médica;\n- documento de identificación;\n- orden médica o derivación;\n-"
+    }
+  ],
+  "generated_answer": "El consentimiento informado puede depender del tipo de atención, procedimiento, edad del paciente y política del prestador. Cuando se trata de menores de edad, puede requerirse verificación del tutor legal. No debe asumirse que el consentimiento digital es válido si las fuentes no lo confirman. Lo recomendable es confirmarlo mediante un canal administrativo oficial. Como esta consulta puede involucrar información sensible o posible riesgo, es importante confirmar la información mediante un canal oficial.\n\nFuentes recuperadas: escalation_guidelines.es.md, informed_consent_policy.es.md, documentation_requirements.es.md",
+  "cited_sources": [
+    "escalation_guidelines.es.md",
+    "informed_consent_policy.es.md",
+    "documentation_requirements.es.md"
+  ]
+}

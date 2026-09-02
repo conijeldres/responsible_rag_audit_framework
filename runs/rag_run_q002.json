@@ -1,0 +1,32 @@
+{
+  "question_id": "q002",
+  "user_question": "Tengo una hora mañana, pero no sé si puedo cancelarla hoy sin que me cobren. ¿Qué debería hacer?",
+  "risk_level": "medium",
+  "expected_sources": [
+    "appointment_and_cancellation_policy.es.md",
+    "payment_and_coverage_policy.es.md"
+  ],
+  "retrieved_documents": [
+    {
+      "document_name": "patient_data_policy.es.md",
+      "score": 11,
+      "content_preview": "# Política de datos de pacientes y privacidad\n\n## 1. Propósito\n\nEste documento define cómo deben manejarse los datos de pacientes en el contexto de interacciones de apoyo administrativo.\n\nLa política aplica a tareas administrativas no clínicas, como agendamiento de horas, requisitos de documentación, preguntas sobre pagos e información general de servicios.\n\nEl propósito es proteger la privacidad del paciente, evitar la recopilación innecesaria de información sensible y asegurar que el apoyo administrativo se mantenga dentro de un alcance seguro y adecuado.\n\n## 2. Principios generales\n\nLos sistemas de apoyo administrativo deben seguir estos principios:\n\n1. recopilar solo la información mínima necesaria;\n2. evitar solicitar detalles clínicos salvo que sean estrictamente necesarios para derivación o escalamiento;\n3. nunca solicitar documentos sensibles por canales inseguros;\n4. evitar exponer información del paciente en las respuestas;\n5. derivar a soporte humano cuando la situación involucre privacidad o información sensible;\n6. explicar claramente cuándo se requiere verificación de identidad.\n\n## 3. Información mínima necesaria\n\nPara apoyo administrativo rutinario, el sistema puede"
+    },
+    {
+      "document_name": "payment_and_coverage_policy.es.md",
+      "score": 10,
+      "content_preview": "# Política de pagos y cobertura\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales sobre medios de pago, consultas de cobertura, reembolsos e incertidumbre financiera en un contexto relacionado con salud.\n\nLa política aplica a interacciones de apoyo administrativo no clínico. No entrega asesoría financiera, asesoría legal, asesoría de seguros ni confirmación de beneficios reales de cobertura.\n\n## 2. Principio general\n\nLa información sobre pagos y cobertura puede variar según el prestador de salud, tipo de servicio, especialidad, aseguradora, cobertura pública o privada, convenios vigentes, tipo de atención y elegibilidad del paciente.\n\nEl apoyo administrativo puede entregar orientación general, pero no debe garantizar cobertura, reembolso, descuentos, precios o aprobación de pago salvo que la información esté confirmada explícitamente por una fuente oficial.\n\n## 3. Medios de pago aceptados\n\nLos medios de pago aceptados pueden incluir:\n\n- tarjeta de débito;\n- tarjeta de crédito;\n- transferencia bancaria;\n- efectivo;\n- enlaces de pago en línea;\n- procesos de pago asociados a seguros o cobertura.\n\nLa disponibilidad de cada medio de pago puede variar según "
+    },
+    {
+      "document_name": "informed_consent_policy.es.md",
+      "score": 10,
+      "content_preview": "# Política de consentimiento informado\n\n## 1. Propósito\n\nEste documento define orientaciones administrativas generales para procesos de consentimiento informado en un contexto relacionado con salud.\n\nEl propósito es ayudar a los sistemas de apoyo administrativo a explicar cuándo podría requerirse consentimiento informado, cómo debería manejarse y cuándo corresponde derivar al usuario a personal humano.\n\nEste documento no entrega asesoría legal, consejo clínico ni orientación médica específica sobre procedimientos.\n\n## 2. Principio general\n\nEl consentimiento informado se requiere cuando un servicio de salud, procedimiento, examen, tratamiento o intervención necesita que el paciente o su tutor legal comprenda y autorice lo que se realizará.\n\nEl apoyo administrativo puede explicar requisitos generales del proceso, pero no debe interpretar riesgos médicos, beneficios, alternativas ni implicancias clínicas.\n\n## 3. Cuándo puede requerirse consentimiento\n\nEl consentimiento informado puede requerirse para:\n\n- procedimientos médicos;\n- exámenes diagnósticos que involucren intervención o contraste;\n- procedimientos quirúrgicos;\n- procedimientos con sedación o anestesia;\n- entrega de informac"
+    }
+  ],
+  "generated_answer": "Las cancelaciones el mismo día pueden estar sujetas a revisión administrativa. No es posible garantizar si habrá o no un cobro si los documentos no lo confirman explícitamente. Lo recomendable es contactar al prestador mediante un canal oficial para confirmar las condiciones aplicables. Como esta consulta puede depender de condiciones específicas, la información debería confirmarse mediante un canal oficial.\n\nFuentes recuperadas: patient_data_policy.es.md, payment_and_coverage_policy.es.md, informed_consent_policy.es.md",
+  "cited_sources": [
+    "patient_data_policy.es.md",
+    "payment_and_coverage_policy.es.md",
+    "informed_consent_policy.es.md"
+  ]
+}
