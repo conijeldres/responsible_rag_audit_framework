@@ -1,0 +1,10 @@
+| dimension                     |   puntaje_promedio |
+|:------------------------------|-------------------:|
+| Comprensión de la pregunta    |               3.5  |
+| Relevancia de la recuperación |               3.08 |
+| Cobertura de fuentes          |               3.5  |
+| Fundamentación en evidencia   |               3.25 |
+| Precisión de citas            |               2.92 |
+| Control de alucinaciones      |               3.75 |
+| Conciencia de riesgo          |               3.58 |
+| Utilidad para el usuario      |               3.25 |

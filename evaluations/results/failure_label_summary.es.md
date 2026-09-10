@@ -1,0 +1,12 @@
+| etiqueta_de_fallo          |   conteo |
+|:---------------------------|---------:|
+| citation_mismatch          |        6 |
+| incomplete_source_coverage |        5 |
+| missing_source             |        4 |
+| answer_not_actionable      |        4 |
+| overgeneralization         |        3 |
+| irrelevant_retrieval       |        2 |
+| risk_underestimation       |        1 |
+| misunderstood_intent       |        1 |
+| unsupported_claim          |        1 |
+| privacy_risk               |        1 |

@@ -49,134 +49,90 @@ JUDGMENT_EN_TO_ES = {
 }
 
 
-def normalize_judgment_en(judgment: str) -> str:
-    judgment = judgment.strip()
-    return JUDGMENT_ES_TO_EN.get(judgment, judgment)
-
-
-def normalize_judgment_es(judgment: str) -> str:
-    judgment_en = normalize_judgment_en(judgment)
-    return JUDGMENT_EN_TO_ES.get(judgment_en, judgment)
-
-
-def extract_text_value(pattern: str, text: str, default: str = "") -> str:
+def extract_value(pattern, text, default=""):
     match = re.search(pattern, text)
-    if match:
-        return match.group(1).strip()
-    return default
+    return match.group(1).strip() if match else default
 
 
-def extract_scores(text: str) -> list[int]:
-    score_matches = re.findall(r"\*\*Puntaje:\*\*\s*`?(\d)/4`?", text)
-    return [int(score) for score in score_matches]
+def extract_scores(text):
+    return [int(score) for score in re.findall(r"\*\*Puntaje:\*\*\s*`?(\d)/4`?", text)]
 
 
-def extract_failure_labels(text: str) -> list[str]:
-    section_match = re.search(
+def extract_failure_labels(text):
+    match = re.search(
         r"## Etiquetas de fallo\s+Etiquetas seleccionadas:\s+```text\s*(.*?)\s*```",
         text,
         re.DOTALL,
     )
-
-    if not section_match:
+    if not match:
         return []
 
-    labels_text = section_match.group(1).strip()
-
+    labels_text = match.group(1).strip()
     if not labels_text:
         return []
 
-    return [
-        label.strip()
-        for label in labels_text.splitlines()
-        if label.strip()
-    ]
+    return [line.strip() for line in labels_text.splitlines() if line.strip()]
 
 
-def parse_audit_file(path: Path) -> dict:
+def parse_audit(path):
     text = path.read_text(encoding="utf-8")
 
-    question_id = extract_text_value(
+    question_id = extract_value(
         r"ID de la pregunta:\s*(q\d+)",
         text,
-        default=path.stem.replace("audit_", "").replace(".es", ""),
+        path.stem.replace("audit_", "").replace(".es", ""),
     )
 
-    risk_level = extract_text_value(
-        r"Nivel de riesgo:\s*(\w+)",
-        text,
-        default="unknown",
-    )
-
-    judgment_raw = extract_text_value(
-        r"Juicio global:\s*([^\n]+)",
-        text,
-        default="Unknown",
-    )
+    risk_level = extract_value(r"Nivel de riesgo:\s*(\w+)", text, "unknown")
+    judgment_es = extract_value(r"Juicio global:\s*([^\n]+)", text, "Unknown")
+    judgment_en = JUDGMENT_ES_TO_EN.get(judgment_es, judgment_es)
 
     scores = extract_scores(text)
 
-    if len(scores) != len(DIMENSIONS_ES):
-        raise ValueError(
-            f"{path.name} has {len(scores)} scores, expected {len(DIMENSIONS_ES)}"
-        )
+    if len(scores) != 8:
+        raise ValueError(f"{path.name} has {len(scores)} scores, expected 8")
 
-    failure_labels = extract_failure_labels(text)
+    labels = extract_failure_labels(text)
 
     row = {
         "question_id": question_id,
         "risk_level": risk_level,
-        "overall_judgment_en": normalize_judgment_en(judgment_raw),
-        "overall_judgment_es": normalize_judgment_es(judgment_raw),
-        "failure_labels": "; ".join(failure_labels),
+        "overall_judgment_en": judgment_en,
+        "overall_judgment_es": JUDGMENT_EN_TO_ES.get(judgment_en, judgment_es),
+        "failure_labels": "; ".join(labels),
+        "average_score": round(sum(scores) / len(scores), 2),
     }
 
-    for dimension_en, score in zip(DIMENSIONS_EN, scores):
-        row[dimension_en] = score
-
-    row["average_score"] = round(sum(scores) / len(scores), 2)
+    for dimension, score in zip(DIMENSIONS_EN, scores):
+        row[dimension] = score
 
     return row
 
 
-def load_audit_results() -> pd.DataFrame:
+def load_results():
     audit_files = sorted(AUDITS_PATH.glob("audit_q*.es.md"))
 
     if not audit_files:
-        raise FileNotFoundError(
-            "No Spanish audit files were found in evaluations/audits."
-        )
+        raise FileNotFoundError("No Spanish audit files found in evaluations/audits.")
 
-    rows = [parse_audit_file(path) for path in audit_files]
-
-    df = pd.DataFrame(rows)
-    df = df.sort_values("question_id")
-
-    return df
+    rows = [parse_audit(path) for path in audit_files]
+    return pd.DataFrame(rows).sort_values("question_id")
 
 
-def build_english_results(df: pd.DataFrame) -> pd.DataFrame:
-    columns = [
-        "question_id",
-        "risk_level",
-        "overall_judgment_en",
-        *DIMENSIONS_EN,
-        "average_score",
-        "failure_labels",
-    ]
-
-    return df[columns].rename(
-        columns={
-            "question_id": "question_id",
-            "risk_level": "risk_level",
-            "overall_judgment_en": "overall_judgment",
-            "average_score": "average_score",
-            "failure_labels": "failure_labels",
-        }
-    )
+def build_results_en(df):
+    return df[
+        [
+            "question_id",
+            "risk_level",
+            "overall_judgment_en",
+            *DIMENSIONS_EN,
+            "average_score",
+            "failure_labels",
+        ]
+    ].rename(columns={"overall_judgment_en": "overall_judgment"})
 
 
-def build_spanish_results(df: pd.DataFrame) -> pd.DataFrame:
+def build_results_es(df):
     rename_map = {
         "question_id": "id_pregunta",
         "risk_level": "nivel_riesgo",
@@ -185,50 +141,32 @@ def build_spanish_results(df: pd.DataFrame) -> pd.DataFrame:
         "failure_labels": "etiquetas_de_fallo",
     }
 
-    for dimension_en, dimension_es in zip(DIMENSIONS_EN, DIMENSIONS_ES):
-        rename_map[dimension_en] = dimension_es
+    for en, es in zip(DIMENSIONS_EN, DIMENSIONS_ES):
+        rename_map[en] = es
 
-    columns = [
-        "question_id",
-        "risk_level",
-        "overall_judgment_es",
-        *DIMENSIONS_EN,
-        "average_score",
-        "failure_labels",
-    ]
-
-    return df[columns].rename(columns=rename_map)
-
-
-def save_main_tables(df: pd.DataFrame) -> None:
-    english_df = build_english_results(df)
-    spanish_df = build_spanish_results(df)
-
-    english_df.to_csv(
-        RESULTS_PATH / "rag_audit_results.csv",
-        index=False,
-        encoding="utf-8",
-    )
-
-    english_df.to_markdown(
-        RESULTS_PATH / "rag_audit_results.md",
-        index=False,
-    )
-
-    spanish_df.to_csv(
-        RESULTS_PATH / "rag_audit_results.es.csv",
-        index=False,
-        encoding="utf-8",
-    )
-
-    spanish_df.to_markdown(
-        RESULTS_PATH / "rag_audit_results.es.md",
-        index=False,
-    )
+    return df[
+        [
+            "question_id",
+            "risk_level",
+            "overall_judgment_es",
+            *DIMENSIONS_EN,
+            "average_score",
+            "failure_labels",
+        ]
+    ].rename(columns=rename_map)
 
 
-def save_dimension_summary(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    dimension_summary_en = (
+def save_tables(df):
+    results_en = build_results_en(df)
+    results_es = build_results_es(df)
+
+    results_en.to_csv(RESULTS_PATH / "rag_audit_results.csv", index=False)
+    results_en.to_markdown(RESULTS_PATH / "rag_audit_results.md", index=False)
+
+    results_es.to_csv(RESULTS_PATH / "rag_audit_results.es.csv", index=False)
+    results_es.to_markdown(RESULTS_PATH / "rag_audit_results.es.md", index=False)
+
+    dimension_en = (
         df[DIMENSIONS_EN]
         .mean()
         .round(2)
@@ -236,285 +174,216 @@ def save_dimension_summary(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame
         .rename(columns={"index": "dimension", 0: "average_score"})
     )
 
-    dimension_summary_es = dimension_summary_en.copy()
-    dimension_summary_es["dimension"] = DIMENSIONS_ES
-    dimension_summary_es = dimension_summary_es.rename(
-        columns={
-            "dimension": "dimension",
-            "average_score": "puntaje_promedio",
+    dimension_es = pd.DataFrame(
+        {
+            "dimension": DIMENSIONS_ES,
+            "puntaje_promedio": dimension_en["average_score"],
         }
     )
 
-    dimension_summary_en.to_csv(
-        RESULTS_PATH / "dimension_summary.csv",
-        index=False,
-        encoding="utf-8",
-    )
+    dimension_en.to_csv(RESULTS_PATH / "dimension_summary.csv", index=False)
+    dimension_en.to_markdown(RESULTS_PATH / "dimension_summary.md", index=False)
 
-    dimension_summary_en.to_markdown(
-        RESULTS_PATH / "dimension_summary.md",
-        index=False,
-    )
+    dimension_es.to_csv(RESULTS_PATH / "dimension_summary.es.csv", index=False)
+    dimension_es.to_markdown(RESULTS_PATH / "dimension_summary.es.md", index=False)
 
-    dimension_summary_es.to_csv(
-        RESULTS_PATH / "dimension_summary.es.csv",
-        index=False,
-        encoding="utf-8",
-    )
-
-    dimension_summary_es.to_markdown(
-        RESULTS_PATH / "dimension_summary.es.md",
-        index=False,
-    )
-
-    return dimension_summary_en, dimension_summary_es
-
-
-def save_judgment_summary(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    judgment_summary_en = (
+    judgment_en = (
         df["overall_judgment_en"]
         .value_counts()
         .rename_axis("overall_judgment")
         .reset_index(name="count")
     )
 
-    judgment_summary_es = (
+    judgment_es = (
         df["overall_judgment_es"]
         .value_counts()
         .rename_axis("juicio_global")
         .reset_index(name="conteo")
     )
 
-    judgment_summary_en.to_csv(
-        RESULTS_PATH / "judgment_summary.csv",
-        index=False,
-        encoding="utf-8",
-    )
+    judgment_en.to_csv(RESULTS_PATH / "judgment_summary.csv", index=False)
+    judgment_en.to_markdown(RESULTS_PATH / "judgment_summary.md", index=False)
 
-    judgment_summary_en.to_markdown(
-        RESULTS_PATH / "judgment_summary.md",
-        index=False,
-    )
+    judgment_es.to_csv(RESULTS_PATH / "judgment_summary.es.csv", index=False)
+    judgment_es.to_markdown(RESULTS_PATH / "judgment_summary.es.md", index=False)
 
-    judgment_summary_es.to_csv(
-        RESULTS_PATH / "judgment_summary.es.csv",
-        index=False,
-        encoding="utf-8",
-    )
-
-    judgment_summary_es.to_markdown(
-        RESULTS_PATH / "judgment_summary.es.md",
-        index=False,
-    )
-
-    return judgment_summary_en, judgment_summary_es
-
-
-def save_failure_label_summary(df: pd.DataFrame) -> pd.DataFrame:
     labels = []
-
     for value in df["failure_labels"].dropna():
-        if not value.strip():
-            continue
+        labels.extend([label.strip() for label in value.split(";") if label.strip()])
 
-        labels.extend(
-            label.strip()
-            for label in value.split(";")
-            if label.strip()
+    failure_en = (
+        pd.DataFrame(Counter(labels).items(), columns=["failure_label", "count"])
+        .sort_values("count", ascending=False)
+    )
+
+    failure_es = failure_en.rename(
+        columns={"failure_label": "etiqueta_de_fallo", "count": "conteo"}
+    )
+
+    failure_en.to_csv(RESULTS_PATH / "failure_label_summary.csv", index=False)
+    failure_en.to_markdown(RESULTS_PATH / "failure_label_summary.md", index=False)
+
+    failure_es.to_csv(RESULTS_PATH / "failure_label_summary.es.csv", index=False)
+    failure_es.to_markdown(RESULTS_PATH / "failure_label_summary.es.md", index=False)
+
+    return dimension_en, dimension_es, judgment_en, judgment_es, failure_en
+
+
+def save_chart(path, title, xlabel, ylabel, x, y, ylim=None, horizontal=False):
+    plt.figure(figsize=(10, 6))
+
+    if horizontal:
+        plt.barh(x, y)
+    else:
+        plt.bar(x, y)
+
+    if ylim:
+        plt.ylim(*ylim)
+
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.tight_layout()
+    plt.savefig(path, dpi=200)
+    plt.close()
+
+
+def save_charts(df, dimension_en, dimension_es, judgment_en, judgment_es, failure_en):
+    save_chart(
+        CHARTS_PATH / "average_score_by_question.png",
+        "Average score by question",
+        "Question ID",
+        "Average score",
+        df["question_id"],
+        df["average_score"],
+        ylim=(0, 4),
+    )
+
+    save_chart(
+        CHARTS_PATH / "puntaje_promedio_por_pregunta.png",
+        "Puntaje promedio por pregunta",
+        "ID de pregunta",
+        "Puntaje promedio",
+        df["question_id"],
+        df["average_score"],
+        ylim=(0, 4),
+    )
+
+    dimension_en_sorted = dimension_en.sort_values("average_score")
+    save_chart(
+        CHARTS_PATH / "average_score_by_dimension.png",
+        "Average score by evaluation dimension",
+        "Average score",
+        "Evaluation dimension",
+        dimension_en_sorted["dimension"],
+        dimension_en_sorted["average_score"],
+        horizontal=True,
+    )
+
+    dimension_es_sorted = dimension_es.sort_values("puntaje_promedio")
+    save_chart(
+        CHARTS_PATH / "puntaje_promedio_por_dimension.png",
+        "Puntaje promedio por dimensión de evaluación",
+        "Puntaje promedio",
+        "Dimensión de evaluación",
+        dimension_es_sorted["dimension"],
+        dimension_es_sorted["puntaje_promedio"],
+        horizontal=True,
+    )
+
+    save_chart(
+        CHARTS_PATH / "overall_audit_judgments.png",
+        "Overall audit judgments",
+        "Overall judgment",
+        "Count",
+        judgment_en["overall_judgment"],
+        judgment_en["count"],
+    )
+
+    save_chart(
+        CHARTS_PATH / "juicios_globales_de_auditoria.png",
+        "Juicios globales de auditoría",
+        "Juicio global",
+        "Conteo",
+        judgment_es["juicio_global"],
+        judgment_es["conteo"],
+    )
+
+    if not failure_en.empty:
+        failure_sorted = failure_en.sort_values("count")
+        save_chart(
+            CHARTS_PATH / "failure_labels_observed.png",
+            "Failure labels observed",
+            "Count",
+            "Failure label",
+            failure_sorted["failure_label"],
+            failure_sorted["count"],
+            horizontal=True,
         )
 
-    counter = Counter(labels)
-
-    failure_summary = pd.DataFrame(
-        counter.items(),
-        columns=["failure_label", "count"],
-    ).sort_values("count", ascending=False)
-
-    failure_summary_es = failure_summary.rename(
-        columns={
-            "failure_label": "etiqueta_de_fallo",
-            "count": "conteo",
-        }
-    )
-
-    failure_summary.to_csv(
-        RESULTS_PATH / "failure_label_summary.csv",
-        index=False,
-        encoding="utf-8",
-    )
-
-    failure_summary.to_markdown(
-        RESULTS_PATH / "failure_label_summary.md",
-        index=False,
-    )
-
-    failure_summary_es.to_csv(
-        RESULTS_PATH / "failure_label_summary.es.csv",
-        index=False,
-        encoding="utf-8",
-    )
-
-    failure_summary_es.to_markdown(
-        RESULTS_PATH / "failure_label_summary.es.md",
-        index=False,
-    )
-
-    return failure_summary
+        save_chart(
+            CHARTS_PATH / "etiquetas_de_fallo_observadas.png",
+            "Etiquetas de fallo observadas",
+            "Conteo",
+            "Etiqueta de fallo",
+            failure_sorted["failure_label"],
+            failure_sorted["count"],
+            horizontal=True,
+        )
 
 
-def plot_question_averages_en(df: pd.DataFrame) -> None:
-    plt.figure(figsize=(10, 6))
-    plt.bar(df["question_id"], df["average_score"])
-    plt.ylim(0, 4)
-    plt.xlabel("Question ID")
-    plt.ylabel("Average score")
-    plt.title("Average score by question")
-    plt.tight_layout()
-    plt.savefig(CHARTS_PATH / "average_score_by_question.png", dpi=200)
-    plt.close()
-
-
-def plot_question_averages_es(df: pd.DataFrame) -> None:
-    plt.figure(figsize=(10, 6))
-    plt.bar(df["question_id"], df["average_score"])
-    plt.ylim(0, 4)
-    plt.xlabel("ID de pregunta")
-    plt.ylabel("Puntaje promedio")
-    plt.title("Puntaje promedio por pregunta")
-    plt.tight_layout()
-    plt.savefig(CHARTS_PATH / "puntaje_promedio_por_pregunta.png", dpi=200)
-    plt.close()
-
-
-def plot_dimension_averages_en(dimension_summary_en: pd.DataFrame) -> None:
-    sorted_summary = dimension_summary_en.sort_values("average_score")
-
-    plt.figure(figsize=(10, 6))
-    plt.barh(sorted_summary["dimension"], sorted_summary["average_score"])
-    plt.xlim(0, 4)
-    plt.xlabel("Average score")
-    plt.ylabel("Evaluation dimension")
-    plt.title("Average score by evaluation dimension")
-    plt.tight_layout()
-    plt.savefig(CHARTS_PATH / "average_score_by_dimension.png", dpi=200)
-    plt.close()
-
-
-def plot_dimension_averages_es(dimension_summary_es: pd.DataFrame) -> None:
-    sorted_summary = dimension_summary_es.sort_values("puntaje_promedio")
-
-    plt.figure(figsize=(10, 6))
-    plt.barh(sorted_summary["dimension"], sorted_summary["puntaje_promedio"])
-    plt.xlim(0, 4)
-    plt.xlabel("Puntaje promedio")
-    plt.ylabel("Dimensión de evaluación")
-    plt.title("Puntaje promedio por dimensión de evaluación")
-    plt.tight_layout()
-    plt.savefig(CHARTS_PATH / "puntaje_promedio_por_dimension.png", dpi=200)
-    plt.close()
-
-
-def plot_judgment_summary_en(judgment_summary_en: pd.DataFrame) -> None:
-    plt.figure(figsize=(8, 5))
-    plt.bar(
-        judgment_summary_en["overall_judgment"],
-        judgment_summary_en["count"],
-    )
-    plt.xlabel("Overall judgment")
-    plt.ylabel("Count")
-    plt.title("Overall audit judgments")
-    plt.tight_layout()
-    plt.savefig(CHARTS_PATH / "overall_audit_judgments.png", dpi=200)
-    plt.close()
-
-
-def plot_judgment_summary_es(judgment_summary_es: pd.DataFrame) -> None:
-    plt.figure(figsize=(8, 5))
-    plt.bar(
-        judgment_summary_es["juicio_global"],
-        judgment_summary_es["conteo"],
-    )
-    plt.xlabel("Juicio global")
-    plt.ylabel("Conteo")
-    plt.title("Juicios globales de auditoría")
-    plt.tight_layout()
-    plt.savefig(CHARTS_PATH / "juicios_globales_de_auditoria.png", dpi=200)
-    plt.close()
-
-
-def plot_failure_labels_en(failure_summary: pd.DataFrame) -> None:
-    if failure_summary.empty:
-        return
-
-    plt.figure(figsize=(10, 6))
-    plt.barh(
-        failure_summary["failure_label"],
-        failure_summary["count"],
-    )
-    plt.xlabel("Count")
-    plt.ylabel("Failure label")
-    plt.title("Failure labels observed")
-    plt.tight_layout()
-    plt.savefig(CHARTS_PATH / "failure_labels_observed.png", dpi=200)
-    plt.close()
-
-
-def plot_failure_labels_es(failure_summary: pd.DataFrame) -> None:
-    if failure_summary.empty:
-        return
-
-    plt.figure(figsize=(10, 6))
-    plt.barh(
-        failure_summary["failure_label"],
-        failure_summary["count"],
-    )
-    plt.xlabel("Conteo")
-    plt.ylabel("Etiqueta de fallo")
-    plt.title("Etiquetas de fallo observadas")
-    plt.tight_layout()
-    plt.savefig(CHARTS_PATH / "etiquetas_de_fallo_observadas.png", dpi=200)
-    plt.close()
-
-
-def save_reports(
-    df: pd.DataFrame,
-    dimension_summary_en: pd.DataFrame,
-    dimension_summary_es: pd.DataFrame,
-    judgment_summary_en: pd.DataFrame,
-    judgment_summary_es: pd.DataFrame,
-    failure_summary: pd.DataFrame,
-) -> None:
-    total_questions = len(df)
+def save_reports(df, dimension_en, dimension_es, judgment_en, judgment_es, failure_en):
     overall_average = round(df["average_score"].mean(), 2)
 
-    best_dimension_en = dimension_summary_en.sort_values(
-        "average_score",
-        ascending=False,
-    ).iloc[0]
+    report_en = (
+        "# RAG Audit Results Summary\n\n"
+        f"Total questions audited: {len(df)}\n\n"
+        f"Overall average score: {overall_average}/4\n\n"
+        "## Overall Judgments\n\n"
+        f"{judgment_en.to_markdown(index=False)}\n\n"
+        "## Average Score by Dimension\n\n"
+        f"{dimension_en.to_markdown(index=False)}\n\n"
+        "## Average Score by Question\n\n"
+        f"{build_results_en(df)[['question_id', 'risk_level', 'overall_judgment', 'average_score']].to_markdown(index=False)}\n\n"
+        "## Failure Labels\n\n"
+        f"{failure_en.to_markdown(index=False)}\n\n"
+        "## Interpretation\n\n"
+        "The baseline RAG system showed strong safety behavior, but weaker performance in retrieval precision, citation precision, and generation specificity.\n"
+    )
 
-    weakest_dimension_en = dimension_summary_en.sort_values(
-        "average_score",
-        ascending=True,
-    ).iloc[0]
+    failure_es = failure_en.rename(
+        columns={"failure_label": "etiqueta_de_fallo", "count": "conteo"}
+    )
 
-    best_dimension_es = dimension_summary_es.sort_values(
-        "puntaje_promedio",
-        ascending=False,
-    ).iloc[0]
+    report_es = (
+        "# Resumen de resultados de auditoría RAG\n\n"
+        f"Total de preguntas auditadas: {len(df)}\n\n"
+        f"Puntaje promedio general: {overall_average}/4\n\n"
+        "## Juicios globales\n\n"
+        f"{judgment_es.to_markdown(index=False)}\n\n"
+        "## Puntaje promedio por dimensión\n\n"
+        f"{dimension_es.to_markdown(index=False)}\n\n"
+        "## Puntaje promedio por pregunta\n\n"
+        f"{build_results_es(df)[['id_pregunta', 'nivel_riesgo', 'juicio_global', 'puntaje_promedio']].to_markdown(index=False)}\n\n"
+        "## Etiquetas de fallo\n\n"
+        f"{failure_es.to_markdown(index=False)}\n\n"
+        "## Interpretación\n\n"
+        "El sistema RAG baseline mostró buen comportamiento de seguridad, pero menor desempeño en precisión de recuperación, precisión de citas y especificidad de generación.\n"
+    )
 
-    weakest_dimension_es = dimension_summary_es.sort_values(
-        "puntaje_promedio",
-        ascending=True,
-    ).iloc[0]
+    (RESULTS_PATH / "rag_audit_results_summary.md").write_text(report_en, encoding="utf-8")
+    (RESULTS_PATH / "rag_audit_results_summary.es.md").write_text(report_es, encoding="utf-8")
 
-    report_en = f"""# RAG Audit Results Summary
 
-## Overview
+def main():
+    df = load_results()
+    dimension_en, dimension_es, judgment_en, judgment_es, failure_en = save_tables(df)
+    save_charts(df, dimension_en, dimension_es, judgment_en, judgment_es, failure_en)
+    save_reports(df, dimension_en, dimension_es, judgment_en, judgment_es, failure_en)
 
-This report summarizes the audit results for the Responsible RAG Audit Framework.
+    print("RAG audit result tables and charts created successfully.")
+    print(f"Results saved to: {RESULTS_PATH}")
 
-```text
-Total questions audited: {total_questions}
-Overall average score: {overall_average}/4
-Best-performing dimension: {best_dimension_en["dimension"]} ({best_dimension_en["average_score"]}/4)
-Weakest dimension: {weakest_dimension_en["dimension"]} ({weakest_dimension_en["average_score"]}/4)
+
+if __name__ == "__main__":
+    main()
