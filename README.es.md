@@ -154,7 +154,7 @@ Este repositorio está documentado en inglés y español.
 
 ## Estado
 
-Versión 1 completada.
+Versión 1 completada. [Reporte final](docs/final_report.es.md)
 
 La versión actual incluye:
 
@@ -170,4 +170,3 @@ La versión actual incluye:
 - reportes bilingües de interpretación de resultados.
 
 El proyecto entrega un ejemplo end-to-end de cómo auditar un sistema RAG más allá de la calidad de la respuesta final, considerando comportamiento de recuperación, cobertura de fuentes, fundamentación en evidencia, precisión de citas, control de alucinaciones, conciencia de riesgo y utilidad para el usuario.
-[Reporte final](docs/final_report.es.md)

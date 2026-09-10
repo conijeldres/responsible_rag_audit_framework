@@ -131,7 +131,7 @@ This repository is documented in English and Spanish.
 
 ## Status
 
-Version 1 completed.
+Version 1 completed. [Final report](docs/final_report.md)
 
 The current version includes:
 
@@ -147,4 +147,3 @@ The current version includes:
 - bilingual result interpretation reports.
 
 The project now provides an end-to-end example of how a RAG system can be audited beyond final-answer quality, including retrieval behavior, source coverage, groundedness, citation accuracy, hallucination control, risk awareness, and user usefulness. 
-[Final report](docs/final_report.md)
