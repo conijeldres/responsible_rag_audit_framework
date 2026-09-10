@@ -64,7 +64,6 @@ Versiones futuras podrán incluir recuperación semántica, embeddings, bases ve
 ```text
 data/
   questions_sensitive_docs.jsonl
-  generated_answers.jsonl
   documents/
 
 docs/
@@ -80,18 +79,71 @@ src/
   run_rag.py
 
 runs/
-  rag_run_*.json
+  rag_run_q001.json
+  ...
+  rag_run_q012.json
 
 evaluations/
   rag_audit_template.md
   rag_audit_template.es.md
   audits/
+    audit_q001.md
+    audit_q001.es.md
+    ...
+    audit_q012.md
+    audit_q012.es.md
   results/
+    rag_audit_results.md
+    rag_audit_results.es.md
+    dimension_summary.md
+    dimension_summary.es.md
+    judgment_summary.md
+    judgment_summary.es.md
+    failure_label_summary.md
+    failure_label_summary.es.md
+    rag_audit_results_summary.md
+    rag_audit_results_summary.es.md
+    charts/
 
 scripts/
   create_audit_tables.py
 ```
+## Resultados
 
+El baseline fue evaluado en 12 preguntas en español de dominio sensible.
+
+```text
+Puntaje promedio general: 3.36/4
+Interacciones exitosas: 5
+Interacciones parcialmente exitosas: 6
+Interacciones fallidas: 1
+```
+
+Las dimensiones con mejor desempeño fueron:
+
+- Control de alucinaciones: 3.75/4
+- Conciencia de riesgo: 3.58/4
+- Comprensión de la pregunta: 3.50/4
+- Cobertura de fuentes: 3.50/4
+
+Las dimensiones más débiles fueron:
+
+- Precisión de citas: 2.92/4
+- Relevancia de la recuperación: 3.08/4
+
+La etiqueta de fallo más frecuente fue `citation_mismatch`, observada en 6 casos.
+
+Estos resultados sugieren que el baseline generalmente preservó la seguridad y evitó inventar garantías clínicas, financieras o administrativas. Sin embargo, la auditoría también reveló debilidades en precisión de recuperación, filtrado de citas y especificidad de generación.
+
+Ver resultados completos:
+
+- [Resultados de auditoría RAG](evaluations/results/rag_audit_results.es.md)
+- [Resumen por dimensión](evaluations/results/dimension_summary.es.md)
+- [Resumen de etiquetas de fallo](evaluations/results/failure_label_summary.es.md)
+- [Resumen interpretativo de resultados](evaluations/results/rag_audit_results_summary.es.md)
+
+```
+```
 ## Idioma
 
 Este repositorio está documentado en inglés y español.
@@ -102,6 +154,19 @@ Este repositorio está documentado en inglés y español.
 
 ## Estado
 
-Proyecto en desarrollo.
+Versión 1 completada.
 
-La versión actual incluye la estructura inicial del repositorio. Los próximos pasos son crear el conjunto de documentos sintéticos, el dataset de preguntas, el pipeline RAG baseline, las plantillas de auditoría y los resultados de evaluación.
+La versión actual incluye:
+
+- documentos sintéticos bilingües de dominio sensible;
+- un dataset de preguntas de evaluación en español;
+- un pipeline baseline ligero de estilo RAG;
+- corridas RAG generadas para 12 preguntas;
+- auditorías cualitativas para cada corrida;
+- plantillas de auditoría bilingües;
+- tablas cuantitativas de resultados;
+- gráficos bilingües;
+- resúmenes de etiquetas de fallo;
+- reportes bilingües de interpretación de resultados.
+
+El proyecto entrega un ejemplo end-to-end de cómo auditar un sistema RAG más allá de la calidad de la respuesta final, considerando comportamiento de recuperación, cobertura de fuentes, fundamentación en evidencia, precisión de citas, control de alucinaciones, conciencia de riesgo y utilidad para el usuario.

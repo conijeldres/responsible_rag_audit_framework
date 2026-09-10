@@ -64,7 +64,6 @@ Future versions may include semantic retrieval, embeddings, vector databases, or
 ```text
 data/
   questions_sensitive_docs.jsonl
-  generated_answers.jsonl
   documents/
 
 docs/
@@ -80,17 +79,47 @@ src/
   run_rag.py
 
 runs/
-  rag_run_*.json
+  rag_run_q001.json
+  ...
+  rag_run_q012.json
 
 evaluations/
   rag_audit_template.md
   rag_audit_template.es.md
   audits/
+    audit_q001.md
+    audit_q001.es.md
+    ...
+    audit_q012.md
+    audit_q012.es.md
   results/
+    rag_audit_results.md
+    rag_audit_results.es.md
+    dimension_summary.md
+    dimension_summary.es.md
+    judgment_summary.md
+    judgment_summary.es.md
+    failure_label_summary.md
+    failure_label_summary.es.md
+    rag_audit_results_summary.md
+    rag_audit_results_summary.es.md
+    charts/
 
 scripts/
   create_audit_tables.py
 ```
+
+## Results
+
+The baseline was evaluated across 12 Spanish sensitive-domain questions.
+
+```text
+Overall average score: 3.36/4
+Successful interactions: 5
+Partially successful interactions: 6
+Failed interactions: 1
+```
+
 ## Language
 
 This repository is documented in English and Spanish.
@@ -102,5 +131,19 @@ This repository is documented in English and Spanish.
 
 ## Status
 
-Work in progress.
-Current version includes the initial repository structure. Upcoming steps include creating the synthetic document set, question dataset, baseline RAG pipeline, audit templates, and evaluation results.
+Version 1 completed.
+
+The current version includes:
+
+- synthetic bilingual sensitive-domain documents;
+- a Spanish evaluation question dataset;
+- a lightweight baseline RAG-style pipeline;
+- generated RAG runs for 12 questions;
+- qualitative audits for each run;
+- bilingual audit templates;
+- quantitative result tables;
+- bilingual charts;
+- failure label summaries;
+- bilingual result interpretation reports.
+
+The project now provides an end-to-end example of how a RAG system can be audited beyond final-answer quality, including retrieval behavior, source coverage, groundedness, citation accuracy, hallucination control, risk awareness, and user usefulness.
